@@ -7,11 +7,11 @@ import Colorway from "./components/Colorway";
 
 function App() {
   const [currentShoe, setCurrentShoe] = useState(0);
-  const current = shoes[currentShoe];
 
+  const current = shoes[currentShoe];
   return (
-    <main className="snap-y snap-mandatory">
-      <section className="h-screen snap-start">
+    <div className="h-screen">
+      <section className="min-h-screen">
         <motion.div
           animate={{
             background: `radial-gradient(circle, ${current.bgFrom}, ${current.bgTo})`,
@@ -20,10 +20,9 @@ function App() {
             duration: 0.8,
             ease: "easeInOut",
           }}
-          className="text-white h-full flex flex-col justify-between items-center"
+          className="text-white h-screen md:full flex flex-col justify-between items-center"
         >
           <Nav />
-
           <Header
             current={current}
             setCurrentShoe={setCurrentShoe}
@@ -31,11 +30,10 @@ function App() {
           />
         </motion.div>
       </section>
-
-      <section className="h-screen snap-start">
+      <section className="">
         <Colorway />
       </section>
-    </main>
+    </div>
   );
 }
 
