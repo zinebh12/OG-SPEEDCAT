@@ -8,7 +8,8 @@ import MotorSport from "./components/MotorSport";
 
 function App() {
   const [currentShoe, setCurrentShoe] = useState<number | null>(null);
-  const [hasSelectedShoe, setHasSelectedShoe] = useState(false);
+  // const [hasSelectedShoe, setHasSelectedShoe] = useState(false);
+  const [selectedShoe, setSelectedShoe] = useState<number | null>(null);
   const current = currentShoe !== null ? shoes[currentShoe] : shoes[0];
 
   return (
@@ -35,10 +36,13 @@ function App() {
       <section className="relative">
         <Colorway
           setCurrentShoe={setCurrentShoe}
-          setHasSelectedShoe={setHasSelectedShoe}
+          setSelectedShoe={setSelectedShoe}
         />
-        {hasSelectedShoe && (
-          <MotorSport onBack={() => setHasSelectedShoe(false)} />
+        {selectedShoe !== null && (
+          <MotorSport
+            shoe={shoes[selectedShoe]}
+            onBack={() => setSelectedShoe(null)}
+          />
         )}
       </section>
     </div>

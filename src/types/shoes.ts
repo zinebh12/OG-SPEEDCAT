@@ -9,9 +9,15 @@ export type Shoe = {
   bgFrom: string;
   bgTo: string;
   color: string;
+  description: string;
 };
 
 export type ColorwayProps = {
   setCurrentShoe: React.Dispatch<React.SetStateAction<number | null>>;
-  setHasSelectedShoe: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedShoe: React.Dispatch<React.SetStateAction<number | null>>;
+};
+
+export type MotorSportProps = {
+  shoe: Shoe | null;
+  onBack: () => void;
 };

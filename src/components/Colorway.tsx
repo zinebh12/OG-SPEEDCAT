@@ -2,7 +2,7 @@ import { motion, useAnimationControls } from "motion/react";
 import { useRef } from "react";
 import shoes from "../data";
 import type { ColorwayProps } from "../types/shoes";
-const Colorway = ({ setCurrentShoe, setHasSelectedShoe }: ColorwayProps) => {
+const Colorway = ({ setCurrentShoe, setSelectedShoe }: ColorwayProps) => {
   const controls = useAnimationControls();
   const isAnimating = useRef(false);
 
@@ -47,11 +47,25 @@ const Colorway = ({ setCurrentShoe, setHasSelectedShoe }: ColorwayProps) => {
 
   return (
     <motion.div
-      className="w-full h-screen flex flex-col md:flex-row"
+      className="w-full h-screen flex flex-col md:flex-row relative"
       onViewportEnter={handleEnter}
       //onViewportLeave={handleLeave}
       viewport={{ amount: 0.3 }}
     >
+      <motion.h1
+        initial={{ opacity: 0, y: 100 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{
+          amount: 0.4,
+        }}
+        transition={{
+          duration: 0.8,
+          ease: "easeOut",
+        }}
+        className="absolute text-8xl font-bebas font-bold top-10 inset-0 text-center uppercase [-webkit-text-stroke:1px_black] text-transparent "
+      >
+        Select a color
+      </motion.h1>
       {shoes.map((shoe, index) => (
         <motion.button
           key={index}
@@ -61,10 +75,10 @@ const Colorway = ({ setCurrentShoe, setHasSelectedShoe }: ColorwayProps) => {
             y: 100,
           }}
           animate={controls}
-          className="w-full h-full cursor-pointer"
+          className="w-full h-full cursor-pointer relative group"
           onClick={() => {
             setCurrentShoe(index);
-            setHasSelectedShoe(true);
+            setSelectedShoe(index);
             setTimeout(() => {
               document.getElementById("shoe-details")?.scrollIntoView({
                 behavior: "smooth",
@@ -72,8 +86,13 @@ const Colorway = ({ setCurrentShoe, setHasSelectedShoe }: ColorwayProps) => {
             }, 50);
           }}
         >
+          <img
+            src={shoe.image}
+            alt=""
+            className="absolute h-1/2 top-20 group-hover:-translate-y-10 transition-transform duration-300 "
+          />
           <div
-            className="group w-full h-full relative flex items-center"
+            className=" w-full h-full relative flex items-center [clip-path:polygon(0%_40%,100%_20%,100%_100%,0%_100%)] "
             style={{
               background: `radial-gradient(circle, ${shoe.bgFrom}, ${shoe.bgTo})`,
             }}

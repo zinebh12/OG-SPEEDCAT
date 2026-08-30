@@ -1,17 +1,19 @@
 import { motion } from "motion/react";
-type MotorSportProps = {
-  onBack: () => void;
-};
-const MotorSport = ({ onBack }: MotorSportProps) => {
+import type { MotorSportProps } from "../types/shoes";
+const MotorSport = ({ shoe, onBack }: MotorSportProps) => {
   return (
     <motion.div
       initial={{ y: "100%" }}
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: "easeInOut" }}
-      className="absolute inset-0 z-50 bg-amber-300"
+      className="absolute inset-0 z-50 border"
+      style={{
+        background: `${shoe?.bgFrom}`,
+      }}
     >
-      MotorSport
-      <button onClick={onBack}  className="border cursor-pointer">
+      <h1>{shoe?.color}</h1>
+      <p>{shoe?.description}</p>
+      <button onClick={onBack} className="border cursor-pointer">
         back
       </button>
     </motion.div>
