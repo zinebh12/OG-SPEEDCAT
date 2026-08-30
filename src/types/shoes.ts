@@ -8,4 +8,5 @@ export type Shoe = {
   image: string;
   bgFrom: string;
   bgTo: string;
+  color: string;
 };

@@ -9,21 +9,25 @@ const shoes: Shoe[] = [
     image: redSpeedcat,
     bgFrom: "#F04444",
     bgTo: "#FFB36B",
+    color: "Red",
   },
   {
     image: navySpeedcat,
     bgFrom: "#172554",
     bgTo: "#38BDF8",
+    color: "Navy",
   },
   {
     image: graySpeedcat,
     bgFrom: "#525252",
     bgTo: "#E5E5E5",
+    color: "Gray",
   },
   {
     image: greenSpeedcat,
     bgFrom: "#15803D",
     bgTo: "#BEF264",
+    color: "Green",
   },
 ];
 
