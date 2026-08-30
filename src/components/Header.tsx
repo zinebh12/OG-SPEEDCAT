@@ -1,5 +1,6 @@
-import { motion } from "motion/react";
-const Header = ({ current, shoes, setCurrentShoe, currentShoe }) => {
+import ShoeDisplay from "./ShoeDisplay";
+import type { ShoeDisplayProps } from "../types/shoes";
+const Header = ({ current, setCurrentShoe, currentShoe }: ShoeDisplayProps) => {
   return (
     <div className="h-full w-full flex flex-col justify-between items-end ">
       <div className="font-bebas z-0 mt-4 relative h-full w-full overflow-hidden flex flex-col md:flex-row justify-center items-start gap-0">
@@ -14,28 +15,11 @@ const Header = ({ current, shoes, setCurrentShoe, currentShoe }) => {
             <h1>move</h1>
           </div>
         </div>
-        <motion.div
-          key={currentShoe}
-          initial={{ x: -1000, rotate: -10 }}
-          animate={{
-            x: [-1000, 0, 0, 1000],
-            rotate: [-10, 0, 0, 10],
-          }}
-          transition={{
-            duration: 4,
-            times: [0, 0.2, 0.75, 1],
-            ease: "easeInOut",
-          }}
-          onAnimationComplete={() => {
-            setCurrentShoe((prev) => (prev + 1) % shoes.length);
-          }}
-        >
-          <img
-            src={current.image}
-            alt=""
-            className="max-h-[65vh] mt-20 mr-30 object-contain drop-shadow-[0_30px_30px_rgba(0,0,0,0.5)]"
-          />
-        </motion.div>
+        <ShoeDisplay
+          currentShoe={currentShoe}
+          setCurrentShoe={setCurrentShoe}
+          current={current}
+        />
       </div>
       <div className=" font-barlow z-10 md:absolute md:right-0 md:bottom-5 space-y-1 p-4 h-fit">
         <h2 className="font-barlow font-bold text-sm md:text-xl">Speedcat</h2>
