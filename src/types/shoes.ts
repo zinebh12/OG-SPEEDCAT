@@ -1,7 +1,7 @@
 export type ShoeDisplayProps = {
-  currentShoe: number;
-  setCurrentShoe: React.Dispatch<React.SetStateAction<number>>;
-  current: Shoe;
+  currentShoe: number | null;
+  setCurrentShoe: React.Dispatch<React.SetStateAction<number | null>>;
+  current: Shoe | null;
 };
 
 export type Shoe = {
@@ -9,4 +9,9 @@ export type Shoe = {
   bgFrom: string;
   bgTo: string;
   color: string;
+};
+
+export type ColorwayProps = {
+  setCurrentShoe: React.Dispatch<React.SetStateAction<number | null>>;
+  setHasSelectedShoe: React.Dispatch<React.SetStateAction<boolean>>;
 };

@@ -7,8 +7,3 @@
   --font-bebas: "Bebas Neue", sans-serif;
   --font-barlow: "Barlow Condensed", sans-serif;
 }
-
-html {
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
-}

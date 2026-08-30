@@ -1,7 +1,8 @@
 import { motion, useAnimationControls } from "motion/react";
 import { useRef } from "react";
 import shoes from "../data";
-const Colorway = () => {
+import type { ColorwayProps } from "../types/shoes";
+const Colorway = ({ setCurrentShoe, setHasSelectedShoe }: ColorwayProps) => {
   const controls = useAnimationControls();
   const isAnimating = useRef(false);
 
@@ -23,32 +24,32 @@ const Colorway = () => {
     isAnimating.current = false;
   };
 
-  const handleLeave = async () => {
-    if (isAnimating.current) return;
+  // const handleLeave = async () => {
+  //   if (isAnimating.current) return;
 
-    isAnimating.current = true;
+  //   isAnimating.current = true;
 
-    await controls.start((index) => ({
-      opacity: 0,
-      y: 100,
-      transition: {
-        duration: 0.5,
+  //   await controls.start((index) => ({
+  //     opacity: 0,
+  //     y: 100,
+  //     transition: {
+  //       duration: 0.5,
 
-        // Reverse order
-        delay: (shoes.length - 1 - index) * 0.2,
+  //       // Reverse order
+  //       delay: (shoes.length - 1 - index) * 0.2,
 
-        ease: "easeIn",
-      },
-    }));
+  //       ease: "easeIn",
+  //     },
+  //   }));
 
-    isAnimating.current = false;
-  };
+  //   isAnimating.current = false;
+  // };
 
   return (
     <motion.div
       className="w-full h-screen flex flex-col md:flex-row"
       onViewportEnter={handleEnter}
-      onViewportLeave={handleLeave}
+      //onViewportLeave={handleLeave}
       viewport={{ amount: 0.3 }}
     >
       {shoes.map((shoe, index) => (
@@ -61,6 +62,15 @@ const Colorway = () => {
           }}
           animate={controls}
           className="w-full h-full cursor-pointer"
+          onClick={() => {
+            setCurrentShoe(index);
+            setHasSelectedShoe(true);
+            setTimeout(() => {
+              document.getElementById("shoe-details")?.scrollIntoView({
+                behavior: "smooth",
+              });
+            }, 50);
+          }}
         >
           <div
             className="group w-full h-full relative flex items-center"
