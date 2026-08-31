@@ -5,12 +5,13 @@ import Header from "./components/Header";
 import shoes from "./data";
 import Colorway from "./components/Colorway";
 import MotorSport from "./components/MotorSport";
+import ShoeDetails from "./components/ShoeDetails";
 
 function App() {
   const [currentShoe, setCurrentShoe] = useState<number | null>(null);
   const [selectedShoe, setSelectedShoe] = useState<number | null>(null);
   const current = currentShoe !== null ? shoes[currentShoe] : shoes[0];
-
+  const [shoeDescription, setShoeDescription] = useState(false);
   const selectedScrollPosition = useRef<number | null>(null);
 
   const { scrollY } = useScroll();
@@ -64,10 +65,14 @@ function App() {
         {selectedShoe !== null && (
           <MotorSport
             shoe={shoes[selectedShoe]}
-            onBack={() => setSelectedShoe(null)}
+            setShoeDescription={setShoeDescription}
+            shoeDescription={shoeDescription}
           />
         )}
       </section>
+      {selectedShoe !== null && shoeDescription && (
+        <ShoeDetails shoe={shoes[selectedShoe]} />
+      )}
     </div>
   );
 }

@@ -1,6 +1,10 @@
 import { motion } from "motion/react";
 import type { MotorSportProps } from "../types/shoes";
-const MotorSport = ({ shoe }: MotorSportProps) => {
+const MotorSport = ({
+  shoe,
+  setShoeDescription,
+  shoeDescription,
+}: MotorSportProps) => {
   return (
     <motion.div
       id="shoe-details"
@@ -39,11 +43,16 @@ const MotorSport = ({ shoe }: MotorSportProps) => {
           An icon of racing culture
         </h1>
         <img
-          className="hidden md:block h-full absolute -z-10 top-0 md:left-[60%] drop-shadow-[0_30px_30px_rgba(0,0,0,0.5)]  "
+          className="hidden md:block h-full absolute -z-10 top-0 md:left-[60%] drop-shadow-[0_30px_30px_rgba(0,0,0,0.5)]"
           src={shoe?.image1}
           alt=""
         />
-        <button className="cursor-pointer">
+        <button
+          className="cursor-pointer"
+          onClick={() => {
+            setShoeDescription(!shoeDescription);
+          }}
+        >
           <img
             className="h-[50vh] absolute -bottom-4 inset-x-0 md:left-[35%] drop-shadow-[0_30px_30px_rgba(0,0,0,0.5)]"
             src={shoe?.image2}

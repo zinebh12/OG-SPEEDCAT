@@ -21,5 +21,10 @@ export type ColorwayProps = {
 
 export type MotorSportProps = {
   shoe: Shoe | null;
-  onBack: () => void;
+  setShoeDescription: React.Dispatch<React.SetStateAction<boolean>>;
+  shoeDescription: boolean;
+};
+
+export type ShoeDetails = {
+  shoe: Shoe | null;
 };
