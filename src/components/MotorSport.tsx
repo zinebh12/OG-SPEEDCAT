@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import type { MotorSportProps } from "../types/shoes";
-const MotorSport = ({ shoe, onBack }: MotorSportProps) => {
+const MotorSport = ({ shoe }: MotorSportProps) => {
   return (
     <motion.div
     id='shoe-details'
