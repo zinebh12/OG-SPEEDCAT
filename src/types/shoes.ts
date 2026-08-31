@@ -9,6 +9,9 @@ export type Shoe = {
   bgFrom: string;
   bgTo: string;
   color: string;
+  image1: string;
+  image2: string;
+  image3: string;
   description: string;
 };
 
