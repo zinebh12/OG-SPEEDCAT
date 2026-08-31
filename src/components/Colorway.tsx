@@ -93,10 +93,10 @@ const Colorway = ({
           <img
             src={shoe.image}
             alt=""
-            className="absolute h-1/2 top-20 group-hover:-translate-y-10 transition-transform duration-300 "
+            className="absolute md:h-1/2 md:top-20 h-[20vh] top-5 right-4 z-10 md:z-0 group-hover:-translate-y-10 transition-transform duration-300 "
           />
           <div
-            className=" w-full h-full relative flex items-center [clip-path:polygon(0%_40%,100%_20%,100%_100%,0%_100%)] "
+            className=" w-full h-full relative flex items-center md:[clip-path:polygon(0%_40%,100%_20%,100%_100%,0%_100%)] "
             style={{
               background: `radial-gradient(circle, ${shoe.bgFrom}, ${shoe.bgTo})`,
             }}
