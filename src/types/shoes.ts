@@ -15,9 +15,15 @@ export type Shoe = {
   description: string;
 };
 
+// export type ColorwayProps = {
+//   setCurrentShoe: React.Dispatch<React.SetStateAction<number | null>>;
+//   setSelectedShoe: React.Dispatch<React.SetStateAction<number | null>>;
+//   hasSelectedShoe: boolean;
+//   onBack: () => void;
+// };
+
 export type ColorwayProps = {
-  setCurrentShoe: React.Dispatch<React.SetStateAction<number | null>>;
-  setSelectedShoe: React.Dispatch<React.SetStateAction<number | null>>;
+  onSelectShoe: (index: number) => void;
 };
 
 export type MotorSportProps = {

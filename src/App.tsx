@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { motion } from "motion/react";
+import { useState, useRef } from "react";
+import { motion, useScroll, useMotionValueEvent } from "motion/react";
 import Nav from "./components/Nav";
 import Header from "./components/Header";
 import shoes from "./data";
@@ -8,9 +8,35 @@ import MotorSport from "./components/MotorSport";
 
 function App() {
   const [currentShoe, setCurrentShoe] = useState<number | null>(null);
-  // const [hasSelectedShoe, setHasSelectedShoe] = useState(false);
   const [selectedShoe, setSelectedShoe] = useState<number | null>(null);
   const current = currentShoe !== null ? shoes[currentShoe] : shoes[0];
+
+  const selectedScrollPosition = useRef<number | null>(null);
+
+  const { scrollY } = useScroll();
+
+  // NEW: this runs when a user clicks a color
+  const handleSelectShoe = (index: number) => {
+    selectedScrollPosition.current = window.scrollY;
+
+    setCurrentShoe(index);
+    setSelectedShoe(index);
+  };
+
+  // NEW: detects when user scrolls back upward
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious();
+
+    if (
+      selectedScrollPosition.current !== null &&
+      previous !== undefined &&
+      latest < previous &&
+      latest <= selectedScrollPosition.current &&
+      selectedShoe !== null
+    ) {
+      setSelectedShoe(null);
+    }
+  });
 
   return (
     <div className="">
@@ -33,11 +59,8 @@ function App() {
           />
         </motion.div>
       </section>
-      <section className="relative">
-        <Colorway
-          setCurrentShoe={setCurrentShoe}
-          setSelectedShoe={setSelectedShoe}
-        />
+      <section className="">
+        <Colorway onSelectShoe={handleSelectShoe} />
         {selectedShoe !== null && (
           <MotorSport
             shoe={shoes[selectedShoe]}

@@ -3,10 +3,11 @@ import type { MotorSportProps } from "../types/shoes";
 const MotorSport = ({ shoe, onBack }: MotorSportProps) => {
   return (
     <motion.div
+    id='shoe-details'
       initial={{ y: "100%" }}
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: "easeInOut" }}
-      className="absolute inset-0 z-50 border h-full flex justify-between overflow-hidden"
+      className="sticky top-0  z-50 border h-screen flex justify-between overflow-hidden"
       style={{
         background: `${shoe?.bgFrom}`,
       }}
@@ -42,9 +43,6 @@ const MotorSport = ({ shoe, onBack }: MotorSportProps) => {
           alt=""
         />
       </div>
-      <button onClick={onBack} className="border cursor-pointer">
-        back
-      </button>
     </motion.div>
   );
 };

@@ -2,7 +2,9 @@ import { motion, useAnimationControls } from "motion/react";
 import { useRef } from "react";
 import shoes from "../data";
 import type { ColorwayProps } from "../types/shoes";
-const Colorway = ({ setCurrentShoe, setSelectedShoe }: ColorwayProps) => {
+const Colorway = ({
+    onSelectShoe,
+}: ColorwayProps) => {
   const controls = useAnimationControls();
   const isAnimating = useRef(false);
 
@@ -47,8 +49,11 @@ const Colorway = ({ setCurrentShoe, setSelectedShoe }: ColorwayProps) => {
 
   return (
     <motion.div
-      className="w-full h-screen flex flex-col md:flex-row relative"
-      onViewportEnter={handleEnter}
+      className="w-full h-screen flex flex-col md:flex-row sticky top-0"
+      onViewportEnter={() => {
+        handleEnter();
+
+      }}
       //onViewportLeave={handleLeave}
       viewport={{ amount: 0.3 }}
     >
@@ -77,8 +82,7 @@ const Colorway = ({ setCurrentShoe, setSelectedShoe }: ColorwayProps) => {
           animate={controls}
           className="w-full h-full cursor-pointer relative group"
           onClick={() => {
-            setCurrentShoe(index);
-            setSelectedShoe(index);
+             onSelectShoe(index);
             setTimeout(() => {
               document.getElementById("shoe-details")?.scrollIntoView({
                 behavior: "smooth",
