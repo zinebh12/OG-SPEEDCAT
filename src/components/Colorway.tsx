@@ -84,7 +84,7 @@ const Colorway = ({
           onClick={() => {
              onSelectShoe(index);
             setTimeout(() => {
-              document.getElementById("shoe-details")?.scrollIntoView({
+              document.getElementById("motorsport")?.scrollIntoView({
                 behavior: "smooth",
               });
             }, 50);

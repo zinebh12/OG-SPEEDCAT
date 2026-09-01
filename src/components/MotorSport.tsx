@@ -7,7 +7,7 @@ const MotorSport = ({
 }: MotorSportProps) => {
   return (
     <motion.div
-      id="shoe-details"
+      id="motorsport"
       initial={{ y: "100%" }}
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: "easeInOut" }}
@@ -51,6 +51,12 @@ const MotorSport = ({
           className="cursor-pointer"
           onClick={() => {
             setShoeDescription(!shoeDescription);
+
+            setTimeout(() => {
+              document.getElementById("shoe-details")?.scrollIntoView({
+                behavior: "smooth",
+              });
+            }, 50);
           }}
         >
           <img
