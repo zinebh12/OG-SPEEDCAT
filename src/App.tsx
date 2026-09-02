@@ -71,7 +71,10 @@ function App() {
         )}
       </section>
       {selectedShoe !== null && shoeDescription && (
-        <ShoeDetails shoe={shoes[selectedShoe]} />
+        <ShoeDetails
+          shoe={shoes[selectedShoe]}
+          setShoeDescription={setShoeDescription}
+        />
       )}
     </div>
   );

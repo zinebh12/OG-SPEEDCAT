@@ -39,9 +39,7 @@ const shoes: Shoe[] = [
     image1: royalPants,
     image2: royalShoe,
     image3: speedCatRoyalStreet,
-
-    description:
-      "An icon of racing culture, the PUMA Speedcat has been synonymous with speed, precision, and unparalleled performance for over 25 years. It originated as a fireproof Formula 1® footwear style, but over the decades it found itself on a new circuit – transcending the tracks of Monaco for the streets of global fashion capitals. Wrapped in soft suede and premium leather, this silhouette is reissued in its original red and black colorways with a new PUMA Cat Logo at the front.",
+    description: "A bold expression of speed",
   },
   {
     image: graySpeedcat,
@@ -51,9 +49,7 @@ const shoes: Shoe[] = [
     image1: grayPants,
     image2: grayShoeImage,
     image3: graySpeedcatStreet,
-
-    description:
-      "An icon of racing culture, the PUMA Speedcat has been synonymous with speed, precision, and unparalleled performance for over 25 years. It originated as a fireproof Formula 1® footwear style, but over the decades it found itself on a new circuit – transcending the tracks of Monaco for the streets of global fashion capitals. Wrapped in soft suede and premium leather, this silhouette is reissued in its original red and black colorways with a new PUMA Cat Logo at the front.",
+    description: "A timeless vision of motion",
   },
   {
     image: emeraldSpeedcat,
@@ -63,9 +59,7 @@ const shoes: Shoe[] = [
     image1: emeraldPants,
     image2: emeraldShoe,
     image3: emeraldSpeedcatStreet,
-
-    description:
-      "An icon of racing culture, the PUMA Speedcat has been synonymous with speed, precision, and unparalleled performance for over 25 years. It originated as a fireproof Formula 1® footwear style, but over the decades it found itself on a new circuit – transcending the tracks of Monaco for the streets of global fashion capitals. Wrapped in soft suede and premium leather, this silhouette is reissued in its original red and black colorways with a new PUMA Cat Logo at the front.",
+    description: "Racing heritage",
   },
 ];
 

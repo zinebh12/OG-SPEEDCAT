@@ -27,4 +27,5 @@ export type MotorSportProps = {
 
 export type ShoeDetails = {
   shoe: Shoe | null;
+  setShoeDescription: React.Dispatch<React.SetStateAction<boolean>>;
 };

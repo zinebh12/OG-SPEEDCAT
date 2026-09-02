@@ -1,10 +1,12 @@
 import type { ShoeDetails } from "../types/shoes";
 import { motion } from "motion/react";
 import { useState, useRef } from "react";
-const ShoeDetails = ({ shoe }: ShoeDetails) => {
+import FindYourSpeed from "./FindYourSpeed";
+const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
   const [activeFeature, setActiveFeature] = useState(0);
   const shoeRef = useRef<HTMLDivElement>(null);
   const isScrolling = useRef(false);
+  const [isShoeVisible, setIsShoeVisible] = useState(true);
   const handleScroll = (e: React.WheelEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (isScrolling.current) return;
@@ -14,6 +16,8 @@ const ShoeDetails = ({ shoe }: ShoeDetails) => {
     const currentIndex = currentSection.reduce(
       (closest, sec, index) => {
         const rect = sec.getBoundingClientRect();
+
+        // const distance = rect.top > 0 ? rect.top : Math.abs(rect.bottom - window.innerHeight);
 
         const distance = Math.abs(rect.top);
 
@@ -41,40 +45,114 @@ const ShoeDetails = ({ shoe }: ShoeDetails) => {
     });
     setTimeout(() => {
       isScrolling.current = false;
-    }, 1500);
+    }, 1000);
+  };
+  const touchStartY = useRef(0);
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    const touchEndY = e.changedTouches[0].clientY;
+    const deltaY = touchStartY.current - touchEndY;
+
+    if (Math.abs(deltaY) < 50) return;
+
+    if (isScrolling.current) return;
+
+    const section = shoeRef.current?.querySelectorAll(".shoe-section");
+    if (!section) return;
+
+    const currentSection = Array.from(section);
+
+    const currentIndex = currentSection.reduce(
+      (closest, sec, index) => {
+        const rect = sec.getBoundingClientRect();
+        const distance = Math.abs(rect.top);
+
+        if (distance < closest.distance) {
+          return { index, distance };
+        }
+
+        return closest;
+      },
+      { index: 0, distance: Infinity },
+    ).index;
+
+    let nextIndex = currentIndex;
+
+    if (deltaY > 0) {
+      nextIndex = Math.min(currentIndex + 1, currentSection.length - 1);
+    }
+
+    if (deltaY < 0) {
+      nextIndex = Math.max(currentIndex - 1, 0);
+    }
+
+    if (nextIndex === currentIndex) return;
+
+    isScrolling.current = true;
+
+    currentSection[nextIndex].scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+
+    setTimeout(() => {
+      isScrolling.current = false;
+    }, 1000);
   };
 
   return (
     <div
       ref={shoeRef}
       onWheel={handleScroll}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       id="shoe-details"
-      className="h-full relative"
+      className="h-full relative overflow-x-hidden"
       style={{
         background: `${shoe?.bgFrom}`,
       }}
     >
-      <div className="fixed left-8 top-1/2 flex flex-col gap-4 text-white text-left">
-        <span
-          className={
-            activeFeature === 0
-              ? "text-white text-xs font-bold font-barlow"
-              : "opacity-40 text-xs font-bold font-barlow"
-          }
-        >
-          OG
-        </span>
-        <span className={activeFeature === 1 ? "text-white" : "opacity-40"}>
-          01
-        </span>
-        <span className={activeFeature === 2 ? "text-white" : "opacity-40"}>
-          02
-        </span>
-        <span className={activeFeature === 3 ? "text-white" : "opacity-40"}>
-          03
-        </span>
-      </div>
-      <div className="fixed z-10 top-1/4 left-[30%] inset-x-0 ">
+      {/* Feature navigation */}
+      {isShoeVisible && (
+        <div className="hidden fixed left-8 top-1/2 md:flex flex-col gap-4 text-white text-left">
+          <span
+            className={
+              activeFeature === 0
+                ? "text-white text-xs font-bold font-barlow"
+                : "opacity-40 text-xs font-bold font-barlow"
+            }
+          >
+            OG
+          </span>
+
+          <span className={activeFeature === 1 ? "text-white" : "opacity-40"}>
+            01
+          </span>
+
+          <span className={activeFeature === 2 ? "text-white" : "opacity-40"}>
+            02
+          </span>
+
+          <span className={activeFeature === 3 ? "text-white" : "opacity-40"}>
+            03
+          </span>
+        </div>
+      )}
+
+      {/* Fixed shoe */}
+      <motion.div
+        className={`hidden md:block md:fixed z-10 top-1/4 left-[10vw] md:left-[30%] inset-x-0 ${
+          isShoeVisible ? "pointer-events-auto" : "pointer-events-none"
+        }`}
+        animate={{
+          opacity: isShoeVisible ? 1 : 0,
+        }}
+        transition={{ duration: 0.3 }}
+      >
         <motion.img
           animate={{
             rotate: activeFeature === 0 ? -10 : 10,
@@ -82,14 +160,22 @@ const ShoeDetails = ({ shoe }: ShoeDetails) => {
             scale: activeFeature === 1 ? 1.1 : 1,
           }}
           transition={{ duration: 0.8 }}
-          className="h-[60vh]  drop-shadow-[0_30px_30px_rgba(0,0,0,0.5)]"
+          className="object-contain cursor-pointer h-[40vh] md:h-[60vh] drop-shadow-[0_30px_30px_rgba(0,0,0,0.5)]"
           src={shoe?.image}
           alt=""
+          onClick={() => {
+            setShoeDescription(false);
+          }}
         />
-      </div>
+      </motion.div>
+
+      {/* OG */}
       <motion.div
-        onViewportEnter={() => setActiveFeature(0)}
-        className="shoe-section h-screen relative"
+        onViewportEnter={() => {
+          setActiveFeature(0);
+          setIsShoeVisible(true);
+        }}
+        className="shoe-section h-screen relative flex flex-col justify-between items-center"
       >
         <motion.h1
           initial={{ y: "-100%", opacity: 0 }}
@@ -100,10 +186,23 @@ const ShoeDetails = ({ shoe }: ShoeDetails) => {
             damping: 10,
             mass: 1,
           }}
-          className="text-white pt-4 uppercase text-7xl text-center font-bold font-bebas"
+          className="h-fit text-white pt-20 md:pt-4 uppercase text-4xl md:text-7xl text-center font-bold font-bebas"
         >
           {shoe?.color} OG SPEEDCAT
         </motion.h1>
+        <div className="md:hidden flex justify-center items-center h-fit w-full">
+          <motion.img
+            animate={{
+              rotate: activeFeature === 0 ? -10 : 10,
+              y: activeFeature === 0 ? 0 : -30,
+              scale: activeFeature === 1 ? 1.1 : 1,
+            }}
+            transition={{ duration: 0.8 }}
+            className="object-contain h-[40vh]"
+            src={shoe?.image}
+            alt=""
+          />
+        </div>
         <motion.h1
           initial={{ y: "100%", opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -113,19 +212,25 @@ const ShoeDetails = ({ shoe }: ShoeDetails) => {
             damping: 10,
             mass: 1,
           }}
-          className="text-white uppercase text-7xl text-center font-bold font-bebas absolute bottom-0 w-full z-0"
+          className="h-fit text-white uppercase mb-30 md:mb-0 text-4xl md:text-7xl text-center font-bold font-bebas md:absolute md:bottom-0 w-full z-0"
         >
           {shoe?.description}
         </motion.h1>
       </motion.div>
+
+      {/* Feature 01 */}
       <motion.div
-        onViewportEnter={() => setActiveFeature(1)}
+        onViewportEnter={() => {
+          setActiveFeature(1);
+          setIsShoeVisible(true);
+        }}
         viewport={{ amount: 0.5 }}
-        className="shoe-section h-screen relative"
+        className="shoe-section h-screen w-full relative flex flex-col justify-evenly items-center"
       >
-        <p className="absolute right-[-16%] top-1/2 -rotate-90 text-xs tracking-[0.4em] text-white/60">
+        <p className="absolute right-[-55%] top-1/2 md:right-[-16%] -rotate-90 text-xs tracking-[0.4em] text-white/60">
           PUMA SPEEDCAT OG — MOTORSPORT INSPIRED
         </p>
+
         <motion.h2
           initial={{ x: 30, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
@@ -136,11 +241,24 @@ const ShoeDetails = ({ shoe }: ShoeDetails) => {
             damping: 10,
             mass: 1,
           }}
-          className="absolute right-10 top-[20%] text-[15rem] font-bebas font-bold text-white/10"
+          className="absolute right-0 md:right-10 top-[20%] text-[30rem] md:text-[15rem] font-bebas font-bold text-white/10"
         >
           01
         </motion.h2>
-        <div className="absolute text-white font-barlow left-[5%] top-[40%]">
+        <div className="md:hidden flex justify-center items-center h-fit">
+          <motion.img
+            animate={{
+              rotate: activeFeature === 0 ? -10 : 10,
+              y: activeFeature === 0 ? 0 : -30,
+              scale: activeFeature === 1 ? 1.1 : 1,
+            }}
+            transition={{ duration: 0.8 }}
+            className="object-contain h-[40vh]"
+            src={shoe?.image}
+            alt=""
+          />
+        </div>
+        <div className="md:absolute w-full h-fit text-white font-barlow px-4 md:left-[5%] md:top-[40%]">
           <motion.span
             initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -155,6 +273,7 @@ const ShoeDetails = ({ shoe }: ShoeDetails) => {
           >
             FEATURE 01
           </motion.span>
+
           <motion.p
             initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -170,6 +289,7 @@ const ShoeDetails = ({ shoe }: ShoeDetails) => {
           >
             LOW PROFILE
           </motion.p>
+
           <motion.span
             initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -187,16 +307,22 @@ const ShoeDetails = ({ shoe }: ShoeDetails) => {
           </motion.span>
         </div>
       </motion.div>
+
+      {/* Feature 02 */}
       <motion.div
-        onViewportEnter={() => setActiveFeature(2)}
+        onViewportEnter={() => {
+          setActiveFeature(1);
+          setIsShoeVisible(true);
+        }}
         viewport={{ amount: 0.5 }}
-        className="shoe-section h-screen relative"
+        className="shoe-section h-screen w-full relative flex flex-col justify-evenly items-center"
       >
-        <p className="absolute right-[-16%] top-1/2 -rotate-90 text-xs tracking-[0.4em] text-white/60">
+        <p className="absolute right-[-55%] top-1/2 md:right-[-16%] -rotate-90 text-xs tracking-[0.4em] text-white/60">
           PUMA SPEEDCAT OG — MOTORSPORT INSPIRED
         </p>
+
         <motion.h2
-          initial={{ x: -30, opacity: 0 }}
+          initial={{ x: 30, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
           viewport={{ once: false, amount: 0.3 }}
           transition={{
@@ -205,11 +331,25 @@ const ShoeDetails = ({ shoe }: ShoeDetails) => {
             damping: 10,
             mass: 1,
           }}
-          className="absolute left-[5%] top-[20%] text-[15rem] font-bebas font-bold text-white/10"
+          className="absolute right-0 md:left-[5%] top-[20%] text-[30rem] md:text-[15rem] font-bebas font-bold text-white/10"
         >
           02
         </motion.h2>
-        <div className="absolute text-white font-barlow right-1/9 top-[40%] ">
+        <div className="md:hidden flex justify-center items-center h-fit">
+          <motion.img
+            animate={{
+              rotate: activeFeature === 0 ? -10 : 10,
+              y: activeFeature === 0 ? 0 : -30,
+              scale: activeFeature === 1 ? 1.1 : 1,
+            }}
+            transition={{ duration: 0.8 }}
+            className="object-contain h-[40vh]"
+            src={shoe?.image}
+            alt=""
+          />
+        </div>
+        {/* <div className="absolute text-white font-barlow bottom-1/8 left-5 md:left-auto md:right-1/9 md:top-[40%]"> */}
+        <div className="md:absolute w-full md:w-fit h-fit text-white font-barlow px-4 md:p-0 md:right-1/9 md:top-[40%]">
           <motion.span
             initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -240,6 +380,7 @@ const ShoeDetails = ({ shoe }: ShoeDetails) => {
           >
             SUEDE UPPER
           </motion.p>
+
           <motion.span
             initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -253,18 +394,24 @@ const ShoeDetails = ({ shoe }: ShoeDetails) => {
             }}
             className="inline-block text-sm tracking-[0.3em] opacity-60"
           >
-            A classic premium look
+            A classic premium Look
           </motion.span>
         </div>
       </motion.div>
+
+      {/* Feature 03 */}
       <motion.div
-        onViewportEnter={() => setActiveFeature(3)}
+        onViewportEnter={() => {
+          setActiveFeature(3);
+          setIsShoeVisible(true);
+        }}
         viewport={{ amount: 0.5 }}
-        className="shoe-section h-screen relative"
+        className="shoe-section h-screen w-full relative flex flex-col justify-evenly items-center"
       >
-        <p className="absolute right-[-16%] top-1/2 -rotate-90 text-xs tracking-[0.4em] text-white/60">
+        <p className="absolute right-[-55%] top-1/2 md:right-[-16%] -rotate-90 text-xs tracking-[0.4em] text-white/60">
           PUMA SPEEDCAT OG — MOTORSPORT INSPIRED
         </p>
+
         <motion.h2
           initial={{ x: 30, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
@@ -275,11 +422,24 @@ const ShoeDetails = ({ shoe }: ShoeDetails) => {
             damping: 10,
             mass: 1,
           }}
-          className="absolute right-10 top-[20%] text-[15rem] font-bebas font-bold text-white/10"
+          className="absolute right-0 md:right-10 top-[20%] text-[30rem] md:text-[15rem] font-bebas font-bold text-white/10"
         >
           03
         </motion.h2>
-        <div className="absolute text-white font-barlow left-[5%] top-[40%]">
+        <div className="md:hidden flex justify-center items-center h-fit">
+          <motion.img
+            animate={{
+              rotate: activeFeature === 0 ? -10 : 10,
+              y: activeFeature === 0 ? 0 : -30,
+              scale: activeFeature === 1 ? 1.1 : 1,
+            }}
+            transition={{ duration: 0.8 }}
+            className="object-contain h-[40vh]"
+            src={shoe?.image}
+            alt=""
+          />
+        </div>
+        <div className="md:absolute w-full h-fit text-white font-barlow px-4 md:left-[5%] md:top-[40%]">
           <motion.span
             initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -310,6 +470,7 @@ const ShoeDetails = ({ shoe }: ShoeDetails) => {
           >
             RUBBER OUTSOLE
           </motion.p>
+
           <motion.span
             initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -326,6 +487,15 @@ const ShoeDetails = ({ shoe }: ShoeDetails) => {
             Designed for grip and movement
           </motion.span>
         </div>
+      </motion.div>
+
+      {/* Find Your Speed */}
+      <motion.div
+        onViewportEnter={() => setIsShoeVisible(false)}
+        viewport={{ amount: 0.3 }}
+        className="shoe-section h-screen relative"
+      >
+        <FindYourSpeed />
       </motion.div>
     </div>
   );
