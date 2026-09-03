@@ -23,15 +23,13 @@ const Header = ({ current, setCurrentShoe, currentShoe }: ShoeDisplayProps) => {
           <div className="absolute text-6xl md:text-9xl font-bold md:bottom-50 md:right-50 z-10 flex gap-4">
             <motion.h1
               initial={{ opacity: 0, x: -100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{
-                amount: 0.4,
-              }}
+             animate={{ opacity: 1, x: 0 }}
+              // viewport={{ amount: 0.4 }}
               transition={{
                 duration: 0.8,
                 ease: "easeOut",
               }}
-              className="[-webkit-text-stroke:1px_white] text-transparent"
+              className="text-transparent [-webkit-text-stroke:1px_white]"
             >
               Every
             </motion.h1>
@@ -56,9 +54,9 @@ const Header = ({ current, setCurrentShoe, currentShoe }: ShoeDisplayProps) => {
           current={current}
         />
       </div>
-      <div className=" font-barlow z-10 md:absolute md:right-0 md:bottom-5 space-y-1 p-4 h-fit">
-        <h2 className="font-barlow font-bold text-sm md:text-xl">Speedcat</h2>
-        <p className="text-xs md:text-sm tracking-widest max-w-[70vh]">
+      <div className=" font-barlow z-10 absolute xl:right-0 bottom-5 space-y-1 p-4 h-fit left-4 xl:left-auto ">
+        <h2 className="font-barlow font-bold text-sm md:text-xl lg:text-4xl xl:text-sm">Speedcat</h2>
+        <p className="text-xs md:text-sm tracking-widest max-w-[70vh] lg:max-w-[60vh] lg:text-2xl xl:text-xs">
           The Puma Speedcat is a classic sneaker originally inspired by
           motorsports, particularly Formula 1 racing, and designed for both
           performance and style.

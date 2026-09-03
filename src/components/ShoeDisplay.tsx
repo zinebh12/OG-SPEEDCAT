@@ -27,7 +27,7 @@ const ShoeDisplay = ({
       <img
         src={current.image}
         alt=""
-        className="max-h-[65vh] mt-20 mr-30 object-contain drop-shadow-[0_30px_30px_rgba(0,0,0,0.5)]"
+        className="max-h-[65vh] md:max-h-[50vh] lg:max-h-[65vh] mt-20 mr-30 object-contain drop-shadow-[0_30px_30px_rgba(0,0,0,0.5)]"
       />
     </motion.div>
   );

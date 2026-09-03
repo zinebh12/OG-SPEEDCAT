@@ -5,9 +5,11 @@ import FindYourSpeed from "./FindYourSpeed";
 const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
   const [activeFeature, setActiveFeature] = useState(0);
   const shoeRef = useRef<HTMLDivElement>(null);
-  const isScrolling = useRef(false);
   const [isShoeVisible, setIsShoeVisible] = useState(true);
-  const handleScroll = (e: React.WheelEvent<HTMLDivElement>) => {
+  const isScrolling = useRef(false);
+  const touchStartY = useRef(0);
+
+  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (isScrolling.current) return;
     const section = shoeRef.current?.querySelectorAll(`.shoe-section`);
@@ -47,7 +49,6 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
       isScrolling.current = false;
     }, 1000);
   };
-  const touchStartY = useRef(0);
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     touchStartY.current = e.touches[0].clientY;
@@ -107,7 +108,7 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
   return (
     <div
       ref={shoeRef}
-      onWheel={handleScroll}
+      onWheel={handleWheel}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       id="shoe-details"
@@ -118,7 +119,7 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
     >
       {/* Feature navigation */}
       {isShoeVisible && (
-        <div className="hidden fixed left-8 top-1/2 md:flex flex-col gap-4 text-white text-left">
+        <div className="hidden fixed left-8 top-1/2 xl:flex flex-col gap-4 text-white text-left">
           <span
             className={
               activeFeature === 0
@@ -145,7 +146,7 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
 
       {/* Fixed shoe */}
       <motion.div
-        className={`hidden md:block md:fixed z-10 top-1/4 left-[10vw] md:left-[30%] inset-x-0 ${
+        className={`hidden xl:block xl:fixed z-10 top-1/4 left-[35%] inset-x-0 ${
           isShoeVisible ? "pointer-events-auto" : "pointer-events-none"
         }`}
         animate={{
@@ -160,7 +161,7 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
             scale: activeFeature === 1 ? 1.1 : 1,
           }}
           transition={{ duration: 0.8 }}
-          className="object-contain cursor-pointer h-[40vh] md:h-[60vh] drop-shadow-[0_30px_30px_rgba(0,0,0,0.5)]"
+          className="object-contain cursor-pointer h-[40vh] xl:h-[60vh] drop-shadow-[0_30px_30px_rgba(0,0,0,0.5)]"
           src={shoe?.image}
           alt=""
           onClick={() => {
@@ -175,6 +176,7 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
           setActiveFeature(0);
           setIsShoeVisible(true);
         }}
+        viewport={{ amount: 0.9 }}
         className="shoe-section h-screen relative flex flex-col justify-between items-center"
       >
         <motion.h1
@@ -186,11 +188,11 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
             damping: 10,
             mass: 1,
           }}
-          className="h-fit text-white pt-20 md:pt-4 uppercase text-4xl md:text-7xl text-center font-bold font-bebas"
+          className="h-fit text-white pt-20 xl:pt-4 uppercase text-4xl md:text-7xl text-center font-bold font-bebas"
         >
           {shoe?.color} OG SPEEDCAT
         </motion.h1>
-        <div className="md:hidden flex justify-center items-center h-fit w-full">
+        <div className="xl:hidden flex justify-center items-center h-fit md:h-full xl:h-fit w-full">
           <motion.img
             animate={{
               rotate: activeFeature === 0 ? -10 : 10,
@@ -224,10 +226,10 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
           setActiveFeature(1);
           setIsShoeVisible(true);
         }}
-        viewport={{ amount: 0.5 }}
-        className="shoe-section h-screen w-full relative flex flex-col justify-evenly items-center"
+        viewport={{ amount: 0.9 }}
+        className="shoe-section h-screen w-full relative flex flex-col justify-evenly md:justify-center items-center md:gap-20"
       >
-        <p className="absolute right-[-55%] top-1/2 md:right-[-16%] -rotate-90 text-xs tracking-[0.4em] text-white/60">
+        <p className="absolute right-[-55%] md:right-[-25%] top-1/2 xl:right-[-16%] -rotate-90 text-xs tracking-[0.4em] text-white/60">
           PUMA SPEEDCAT OG — MOTORSPORT INSPIRED
         </p>
 
@@ -241,11 +243,11 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
             damping: 10,
             mass: 1,
           }}
-          className="absolute right-0 md:right-10 top-[20%] text-[30rem] md:text-[15rem] font-bebas font-bold text-white/10"
+          className="absolute right-0 xl:right-10 top-[20%] text-[30rem] xl:text-[15rem] font-bebas font-bold text-white/10"
         >
           01
         </motion.h2>
-        <div className="md:hidden flex justify-center items-center h-fit">
+        <div className="xl:hidden flex justify-center items-center h-fit">
           <motion.img
             animate={{
               rotate: activeFeature === 0 ? -10 : 10,
@@ -258,7 +260,7 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
             alt=""
           />
         </div>
-        <div className="md:absolute w-full h-fit text-white font-barlow px-4 md:left-[5%] md:top-[40%]">
+        <div className="xl:absolute w-full h-fit text-white md:text-center xl:text-start font-barlow px-4 xl:left-[5%] xl:top-[40%]">
           <motion.span
             initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -269,7 +271,7 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
               damping: 10,
               mass: 1,
             }}
-            className="inline-block text-sm tracking-[0.3em] opacity-60"
+            className="inline-block text-sm tracking-[0.3em] opacity-60 md:text-4xl xl:text-sm"
           >
             FEATURE 01
           </motion.span>
@@ -285,7 +287,7 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
               mass: 1,
               delay: 0.3,
             }}
-            className="font-bold text-4xl"
+            className="font-bold text-4xl md:text-7xl xl:text-4xl"
           >
             LOW PROFILE
           </motion.p>
@@ -301,7 +303,7 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
               mass: 1,
               delay: 0.6,
             }}
-            className="inline-block text-sm tracking-[0.3em] opacity-60"
+            className="inline-block text-sm tracking-[0.3em] opacity-60 md:text-2xl xl:text-sm"
           >
             Inspired by racing shoes
           </motion.span>
@@ -311,13 +313,13 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
       {/* Feature 02 */}
       <motion.div
         onViewportEnter={() => {
-          setActiveFeature(1);
+          setActiveFeature(2);
           setIsShoeVisible(true);
         }}
-        viewport={{ amount: 0.5 }}
-        className="shoe-section h-screen w-full relative flex flex-col justify-evenly items-center"
+        viewport={{ amount: 0.9 }}
+        className="shoe-section h-screen w-full relative flex flex-col justify-evenly md:justify-center items-center md:gap-20"
       >
-        <p className="absolute right-[-55%] top-1/2 md:right-[-16%] -rotate-90 text-xs tracking-[0.4em] text-white/60">
+        <p className="absolute right-[-55%] md:right-[-25%] top-1/2 xl:right-[-16%] -rotate-90 text-xs tracking-[0.4em] text-white/60">
           PUMA SPEEDCAT OG — MOTORSPORT INSPIRED
         </p>
 
@@ -331,11 +333,11 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
             damping: 10,
             mass: 1,
           }}
-          className="absolute right-0 md:left-[5%] top-[20%] text-[30rem] md:text-[15rem] font-bebas font-bold text-white/10"
+          className="absolute right-0 xl:left-[5%] top-[20%] text-[30rem] xl:text-[15rem] font-bebas font-bold text-white/10"
         >
           02
         </motion.h2>
-        <div className="md:hidden flex justify-center items-center h-fit">
+        <div className="xl:hidden flex justify-center items-center h-fit">
           <motion.img
             animate={{
               rotate: activeFeature === 0 ? -10 : 10,
@@ -349,7 +351,7 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
           />
         </div>
         {/* <div className="absolute text-white font-barlow bottom-1/8 left-5 md:left-auto md:right-1/9 md:top-[40%]"> */}
-        <div className="md:absolute w-full md:w-fit h-fit text-white font-barlow px-4 md:p-0 md:right-1/9 md:top-[40%]">
+        <div className="xl:absolute w-full md:w-fit h-fit text-white md:text-center xl:text-start font-barlow px-4 md:p-0 md:right-1/9 md:top-[40%]">
           <motion.span
             initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -360,7 +362,7 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
               damping: 10,
               mass: 1,
             }}
-            className="inline-block text-sm tracking-[0.3em] opacity-60"
+            className="inline-block text-sm tracking-[0.3em] opacity-60 md:text-4xl xl:text-sm"
           >
             FEATURE 02
           </motion.span>
@@ -376,7 +378,7 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
               mass: 1,
               delay: 0.3,
             }}
-            className="font-bold text-4xl"
+            className="font-bold text-4xl md:text-7xl xl:text-4xl"
           >
             SUEDE UPPER
           </motion.p>
@@ -392,7 +394,7 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
               mass: 1,
               delay: 0.6,
             }}
-            className="inline-block text-sm tracking-[0.3em] opacity-60"
+            className="inline-block text-sm tracking-[0.3em] opacity-60 md:text-2xl xl:text-sm"
           >
             A classic premium Look
           </motion.span>
@@ -405,10 +407,10 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
           setActiveFeature(3);
           setIsShoeVisible(true);
         }}
-        viewport={{ amount: 0.5 }}
-        className="shoe-section h-screen w-full relative flex flex-col justify-evenly items-center"
+        viewport={{ amount: 0.9 }}
+        className="shoe-section h-screen w-full relative flex flex-col justify-evenly md:justify-center items-center md:gap-20"
       >
-        <p className="absolute right-[-55%] top-1/2 md:right-[-16%] -rotate-90 text-xs tracking-[0.4em] text-white/60">
+        <p className="absolute right-[-55%] top-1/2 md:right-[-25%] xl:right-[-16%] -rotate-90 text-xs tracking-[0.4em] text-white/60">
           PUMA SPEEDCAT OG — MOTORSPORT INSPIRED
         </p>
 
@@ -422,11 +424,11 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
             damping: 10,
             mass: 1,
           }}
-          className="absolute right-0 md:right-10 top-[20%] text-[30rem] md:text-[15rem] font-bebas font-bold text-white/10"
+          className="absolute right-0 xl:right-10 top-[20%] text-[30rem] xl:text-[15rem] font-bebas font-bold text-white/10"
         >
           03
         </motion.h2>
-        <div className="md:hidden flex justify-center items-center h-fit">
+        <div className="xl:hidden flex justify-center items-center h-fit">
           <motion.img
             animate={{
               rotate: activeFeature === 0 ? -10 : 10,
@@ -439,7 +441,7 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
             alt=""
           />
         </div>
-        <div className="md:absolute w-full h-fit text-white font-barlow px-4 md:left-[5%] md:top-[40%]">
+        <div className="xl:absolute w-full h-fit text-white md:text-center xl:text-start font-barlow px-4 xl:left-[5%] xl:top-[40%]">
           <motion.span
             initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -450,7 +452,7 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
               damping: 10,
               mass: 1,
             }}
-            className="inline-block text-sm tracking-[0.3em] opacity-60"
+            className="inline-block text-sm tracking-[0.3em] opacity-60 md:text-4xl xl:text-sm"
           >
             FEATURE 03
           </motion.span>
@@ -466,7 +468,7 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
               mass: 1,
               delay: 0.3,
             }}
-            className="font-bold text-4xl"
+            className="font-bold text-4xl md:text-7xl xl:text-4xl"
           >
             RUBBER OUTSOLE
           </motion.p>
@@ -482,7 +484,7 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
               mass: 1,
               delay: 0.6,
             }}
-            className="inline-block text-sm tracking-[0.3em] opacity-60"
+            className="inline-block text-sm tracking-[0.3em] opacity-60 md:text-2xl xl:text-sm"
           >
             Designed for grip and movement
           </motion.span>
@@ -493,7 +495,7 @@ const ShoeDetails = ({ shoe, setShoeDescription }: ShoeDetails) => {
       <motion.div
         onViewportEnter={() => setIsShoeVisible(false)}
         viewport={{ amount: 0.3 }}
-        className="shoe-section h-screen relative"
+        className="shoe-section h-full xl:h-screen relative"
       >
         <FindYourSpeed />
       </motion.div>

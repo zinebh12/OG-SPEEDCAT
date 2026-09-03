@@ -49,7 +49,7 @@ const Colorway = ({
 
   return (
     <motion.div
-      className="w-full h-screen flex flex-col md:flex-row sticky top-0"
+      className="w-full h-screen flex flex-col xl:flex-row sticky top-0"
       onViewportEnter={() => {
         handleEnter();
 
@@ -67,7 +67,7 @@ const Colorway = ({
           duration: 0.8,
           ease: "easeOut",
         }}
-        className="absolute text-8xl font-bebas font-bold top-10 inset-0 text-center uppercase [-webkit-text-stroke:1px_black] text-transparent "
+        className="hidden lg:absolute text-8xl font-bebas font-bold top-10 inset-0 text-center uppercase [-webkit-text-stroke:1px_black] text-transparent "
       >
         Select a color
       </motion.h1>
@@ -93,10 +93,10 @@ const Colorway = ({
           <img
             src={shoe.image}
             alt=""
-            className="absolute md:h-1/2 md:top-20 h-[20vh] top-5 right-4 z-10 md:z-0 group-hover:-translate-y-10 transition-transform duration-300 "
+            className="absolute xl:h-1/2 xl:top-20 h-[20vh] top-5 right-4 z-10 xl:z-0 group-hover:-translate-y-10 transition-transform duration-300 "
           />
           <div
-            className=" w-full h-full relative flex items-center md:[clip-path:polygon(0%_40%,100%_20%,100%_100%,0%_100%)] "
+            className=" w-full h-full relative flex items-center xl:[clip-path:polygon(0%_40%,100%_20%,100%_100%,0%_100%)] "
             style={{
               background: `radial-gradient(circle, ${shoe.bgFrom}, ${shoe.bgTo})`,
             }}
