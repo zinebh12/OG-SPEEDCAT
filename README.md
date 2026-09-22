@@ -1,75 +1,72 @@
-# React + TypeScript + Vite
+# OG-SPEEDCAT
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern front-end project built with **React 19**, **TypeScript**, and **Vite**, styled with **Tailwind CSS** and animated using **Framer Motion**.
 
-Currently, two official plugins are available:
+> **Note:** This README is based on the project's configuration files (`package.json`, `index.html`, etc.). Feel free to update the description section below with more specific details about what the app does.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## ✨ Tech Stack
 
-## React Compiler
+- **[React 19](https://react.dev/)** – UI library
+- **[TypeScript](https://www.typescriptlang.org/)** – Static typing
+- **[Vite](https://vitejs.dev/)** – Build tool & dev server
+- **[Tailwind CSS v4](https://tailwindcss.com/)** – Utility-first styling
+- **[Motion](https://motion.dev/)** (Framer Motion) – Animations
+- **[Font Awesome](https://fontawesome.com/)** – Icons
+- **ESLint** – Linting with TypeScript-aware rules
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 📦 Prerequisites
 
-## Expanding the ESLint configuration
+- [Node.js](https://nodejs.org/) (v18 or later recommended)
+- npm (comes bundled with Node.js)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🚀 Getting Started
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Clone the repository and install dependencies:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+git clone https://github.com/zinebh12/OG-SPEEDCAT.git
+cd OG-SPEEDCAT
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Start the development server:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+npm run dev
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+The app will be available at `http://localhost:5173` (default Vite port).
+
+## 🛠️ Available Scripts
+
+| Command           | Description                              |
+| ------------------ | ----------------------------------------- |
+| `npm run dev`      | Starts the local development server       |
+| `npm run build`    | Type-checks and builds the app for production |
+| `npm run preview`  | Serves the production build locally       |
+| `npm run lint`     | Runs ESLint across the project            |
+
+## 📁 Project Structure
 
 ```
+OG-SPEEDCAT/
+├── public/          # Static assets
+├── src/             # Application source code
+├── index.html       # HTML entry point
+├── package.json     # Dependencies & scripts
+├── tsconfig.json     # TypeScript configuration
+├── vite.config.ts    # Vite configuration
+└── eslint.config.js  # ESLint configuration
+```
+
+## 🧩 Building for Production
+
+```bash
+npm run build
+```
+
+The optimized output will be generated in the `dist/` folder, ready to be deployed to any static hosting provider (Vercel, Netlify, GitHub Pages, etc.).
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
